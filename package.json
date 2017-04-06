@@ -1,0 +1,22 @@
+{
+  "dependencies": {
+    "mongoose": "^4.9.3",
+    "next": "^2.0.1",
+    "next-redux-wrapper": "^1.0.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "redux": "^3.6.0"
+  },
+  "name": "cider",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": {
+    "url": "https://github.com/pranaygp/cider",
+    "type": "git"
+  },
+  "scripts": {
+    "start": "next ."
+  },
+  "author": "Pranay Prakash <pranay.gp@gmail.com>",
+  "license": "MIT"
+}
