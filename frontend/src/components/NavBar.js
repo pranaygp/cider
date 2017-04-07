@@ -1,10 +1,10 @@
 import React from 'react';
-import { Nav, NavItem } from 'react-bootstrap'
+import { Navbar, Nav, NavItem } from 'react-bootstrap'
 import { push } from 'react-router-redux'
 import { connect } from 'react-redux' 
 
 
-const NavBar = (props) => {
+const Navigation = (props) => {
   
   function handleSelect(selectedKey) {
     props.changePage(selectedKey)
@@ -13,10 +13,17 @@ const NavBar = (props) => {
   }
 
   return (
-    <Nav bsStyle="tabs" justified activeKey={props.path} onSelect={handleSelect}>
-      <NavItem eventKey="/" title="Item">Home</NavItem>
-      <NavItem eventKey="/about" title="Item">About</NavItem>
-    </Nav>
+    <Navbar>
+      <Navbar.Header>
+        <Navbar.Brand>
+          <a onClick={handleSelect.bind({}, '/')}>Cider</a>
+        </Navbar.Brand>
+      </Navbar.Header>
+      <Nav activeKey={props.path} onSelect={handleSelect}>
+        <NavItem eventKey="/" title="Item">Home</NavItem>
+        <NavItem eventKey="/about" title="Item">About</NavItem>
+      </Nav>
+    </Navbar>
   );
 };
 
@@ -28,4 +35,4 @@ const mapDispatchToProps = dispatch => ({
   changePage: page => dispatch(push(page))
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(NavBar);
+export default connect(mapStateToProps, mapDispatchToProps)(Navigation);
