@@ -1,18 +1,30 @@
 import React from 'react';
 import { Nav, NavItem } from 'react-bootstrap'
+import { push } from 'react-router-redux'
+import { connect } from 'react-redux' 
 
-const NavBar = () => {
+
+const NavBar = (props) => {
+  
   function handleSelect(selectedKey) {
-    alert('selected ' + selectedKey);
+    props.changePage(selectedKey)
+    // push('/about')
   }
 
   return (
     <Nav bsStyle="tabs" justified activeKey={1} onSelect={handleSelect}>
-      <NavItem eventKey={1} href="/home">NavItem 1 content</NavItem>
-      <NavItem eventKey={2} title="Item">NavItem 2 content</NavItem>
-      <NavItem eventKey={3} disabled>NavItem 3 content</NavItem>
+      <NavItem eventKey="/" title="Item">Home</NavItem>
+      <NavItem eventKey="/about" title="Item">NavItem 2 content</NavItem>
     </Nav>
   );
 };
 
-export default NavBar;
+const mapStateToProps = state => ({
+
+})
+
+const mapDispatchToProps = dispatch => ({
+  changePage: page => dispatch(push(page))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

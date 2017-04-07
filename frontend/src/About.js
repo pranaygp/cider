@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Grid, Row, Col, PageHeader } from 'react-bootstrap'
 
-class App extends Component {
+class About extends Component {
   render() {
     return (
       <div>
@@ -10,7 +10,7 @@ class App extends Component {
           </Row>
           <Row>
             <Col md={12}>
-              <PageHeader>MAIN PAGE, YAY!</PageHeader>
+              <PageHeader>ABOUT PAGE, YAY!</PageHeader>
             </Col>
           </Row>
         </Grid>
@@ -19,4 +19,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default About;
