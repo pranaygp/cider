@@ -1,10 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './bootstrap.css'
-import './index.css';
 
-import App from './App';
-import About from './About';
+import Home from './pages/Home';
+import About from './pages/About';
 import NavBar from './components/NavBar.js'
 
 import { Provider } from 'react-redux'
@@ -19,7 +18,7 @@ ReactDOM.render(
     <ConnectedRouter history={History}>
       <div>
         <NavBar />
-        <Route component={App} exact path="/" />
+        <Route component={Home} exact path="/" />
         <Route component={About} exact path="/about" />
       </div>
     </ConnectedRouter>
