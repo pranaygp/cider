@@ -2,6 +2,24 @@ import React, { Component } from 'react';
 import { Grid, Row, Col, Form, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
 
 class Login extends Component {
+  constructor(){
+    super()
+    this.handleSubmit = this.handleSubmit.bind(this)
+  }
+
+  handleSubmit(e) {
+    e.preventDefault()
+    
+    const data = {
+      email: e.target.email.value,
+      password: e.target.password.value
+    }
+
+    // valid data
+    console.log(data)
+    
+  }
+
   render() {
     return (
       <div>
@@ -10,7 +28,7 @@ class Login extends Component {
           </Row>
           <Row>
             <Col md={12}>
-              <Form horizontal>
+              <Form horizontal onSubmit={this.handleSubmit}>
                 <FormGroup controlId="email">
                   <Col componentClass={ControlLabel} sm={2}>
                     Email
