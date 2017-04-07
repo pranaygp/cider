@@ -25,6 +25,7 @@ const Navigation = (props) => {
       </Nav>
       <Nav pullRight activeKey={props.path} onSelect={handleSelect}>
         <NavItem eventKey="/login">Login</NavItem>
+        <NavItem eventKey="/signup">Sign Up</NavItem>
       </Nav>
     </Navbar>
   );

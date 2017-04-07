@@ -1,8 +1,6 @@
 import mongoose from 'mongoose'
 
-var profileSchema = mongoose.Schema({
+export default mongoose.Schema({
   name: String,
   classes: Array
 });
-
-export default profileSchema
