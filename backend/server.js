@@ -20,7 +20,7 @@ router.use( (req, res, next) => {
 
 // Default testing route
 router.get('/', (req, res) => {
-    res.json({ message: 'wrong place bud' });
+    res.json({ message: 'API is running' });
 });
 
 router.route('/courses')
@@ -39,11 +39,12 @@ router.route('/courses')
         course.name = req.body.name;
         course.code = req.body.code;
 
-        course.save( (err) => {
+        course.save( (err, course) => {
             if(err)
                 res.send(err);
 
-            res.json({ message: 'Made a new course!'});
+            // res.json({ message: 'Made a new course!'});
+            res.json(course);
         });
     });
 
@@ -65,11 +66,12 @@ router.route('/courses/:course_id')
             course.name = req.body.name;
             course.code = req.body.code;
 
-            course.save( (err) => {
+            course.save( (err, course) => {
                 if(err)
                     res.send(err);
 
-                res.json({ message: 'Course info updated!'});
+                // res.json({ message: 'Course info updated!'});
+                res.json(course)
             });
         });
     })
@@ -103,11 +105,12 @@ router.route('/profiles')
         profile.salt = req.body.salt;
         profile.hash = req.body.hash;
 
-        profile.save( (err) => {
+        profile.save( (err, profile) => {
             if(err)
                 res.send(err);
 
-            res.json({ message: 'Made a new profile!'});
+            // res.json({ message: 'Made a new profile!'});
+            res.json(profile);
         });
     });
 
@@ -132,11 +135,12 @@ router.route('/profiles/:profile_id')
             profile.salt = req.body.salt;
             profile.hash = req.body.hash;
 
-            profile.save( (err) => {
+            profile.save( (err, profile) => {
                 if(err)
                     res.send(err);
 
-                res.json({ message: 'Profile info updated!'});
+                // res.json({ message: 'Profile info updated!'});
+                res.json(profile)
             });
         });
     })

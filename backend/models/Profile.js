@@ -9,10 +9,9 @@ let ProfileSchema = new Schema({
   // For use in a more advanced user auth system; not used for now!
   email: {
     type: String,
-    unique: true,
     required: false // Later set to "true"
   },
-  
+
   hash: String,
   salt: String
 });
