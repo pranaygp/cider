@@ -71,13 +71,13 @@ def test7(num_profiles):
     print "Test 7 passed"
 
 def main():
-    test1()
-    num_profiles = test2()
-    id = test3()
-    test4(num_profiles)
-    test5(id)
-    test6(id)
-    test7(num_profiles)
+    test1() # Test a basic GET on our api root endpoint to see if it's running
+    num_profiles = test2() # Test a GET on our /profiles endpoint and return the number of profiles we have initially
+    id = test3() # Test a POST on our /profiles endpoint and return the ID so we can delete it later
+    test4(num_profiles) # Test a GET on our /profiles endpoint to see if the number of profiles went up
+    test5(id) # Test a GET on our /profiles/:profile_id endpoint to see if we get the profile we created back
+    test6(id) # Test a DELETE on our /profiles/:profile_id endpoint to delete the profile we made
+    test7(num_profiles) # Test a GET on our /profiles endpoint to see if the number of profiles went back down
 
     print "Passed all tests"
 
