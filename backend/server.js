@@ -84,6 +84,73 @@ router.route('/courses/:course_id')
         })
     });
 
+router.route('/profiles')
+    .get( (req, res) => {
+        Profile.find( (err, profiles) => {
+            if(err)
+                res.send(err);
+
+            res.json(profiles);
+        });
+    })
+
+    .post( (req, res) => {
+        let profile = new Profile();
+
+        profile.name = req.body.name;
+        profile.email = req.body.email;
+        profile.classes = req.body.classes;
+        profile.salt = req.body.salt;
+        profile.hash = req.body.hash;
+
+        profile.save( (err) => {
+            if(err)
+                res.send(err);
+
+            res.json({ message: 'Made a new profile!'});
+        });
+    });
+
+router.route('/profiles/:profile_id')
+    .get( (req, res) => {
+        Profile.findById(req.params.profile_id, (err, profile) => {
+            if (err)
+                res.send(err);
+
+            res.json(profile);
+        });
+    })
+
+    .put( (req, res) => {
+        Profile.findById(req.params.profile_id, (err, profile) => {
+            if (err)
+                res.send(err);
+
+            profile.name = req.body.name;
+            profile.email = req.body.email;
+            profile.classes = req.body.classes;
+            profile.salt = req.body.salt;
+            profile.hash = req.body.hash;
+
+            profile.save( (err) => {
+                if(err)
+                    res.send(err);
+
+                res.json({ message: 'Profile info updated!'});
+            });
+        });
+    })
+
+    .delete( (req, res) => {
+        Profile.remove({
+            _id: req.params.profile_id
+        }, (err, profile) => {
+            if(err)
+                res.send(err);
+            res.json({ message: 'Deleted the profile!'});
+        })
+    });
+
 app.use('/api', router);
 app.listen(port);
 console.log('API running on port ' + port);
