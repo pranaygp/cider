@@ -77,8 +77,6 @@ class SignUp extends Component {
                   </Col>
                   <Col sm={10}>
                     <FormControl type="password" placeholder="Password" onChange={this.handleChangePassword} />
-                    <FormControl.Feedback />
-                    <HelpBlock>Validation is based on string length.</HelpBlock>
                   </Col>
                 </FormGroup>
 
