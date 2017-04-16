@@ -11,6 +11,10 @@ let ProfileSchema = new Schema({
     type: String,
     required: false // Later set to "true"
   },
+  facebookId: String,
+  pictureURL: String,
+  about: String,          // Facebook Profile About
+  interestedIn: Array,
 
   hash: String,
   salt: String

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, Form, FormGroup, ControlLabel, FormControl, Button, HelpBlock } from 'react-bootstrap'
+import { Grid, Row, Col, Form, FormGroup, ControlLabel, FormControl, Button } from 'react-bootstrap'
 
 class SignUp extends Component {
   constructor(){

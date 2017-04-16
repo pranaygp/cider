@@ -2,6 +2,10 @@ let Course = require('./models/Course');
 let mongoose = require('mongoose');
 let Profile = require('./models/Profile');
 let express = require('express');
+const cors = require('cors')
+const passport = require('passport')
+const { Strategy: FacebookStrategy } = require('passport-facebook')
+const facebookConfig = require('./config.js')
 let app        = express();
 let bodyParser = require('body-parser');
 
@@ -16,6 +20,50 @@ router.use( (req, res, next) => {
     // Intermediary step before proceeding to next routes.
     console.log('Something is happening.');
     next(); // make sure we go to the next routes and don't stop here
+});
+
+passport.use(new FacebookStrategy({
+    clientID: facebookConfig.clientID,
+    clientSecret: facebookConfig.clientSecret,
+    callbackURL: `http://localhost:${port}/auth/facebook/callback`,
+    profileFields: ['id', 'displayName', 'email', 'picture.type(large)', 'about', 'interested_in']
+  },
+  function(accessToken, refreshToken, profile, cb) {
+    console.log("Authenticated", profile.displayName)
+    // Create profile it if doesn't exist
+    Profile.findOneAndUpdate({facebookId: profile.id}, { 
+        name: profile.displayName,
+        email: profile.emails[0].value,
+        pictureURL: profile.photos[0].value,
+        about: profile._json.about,
+        interestedIn: profile._json.interested_in
+     }, (err, existingProfile) => {
+        if(existingProfile){
+            console.log("Found an existing profile")
+            return cb(err, existingProfile);
+        } else {
+            const dbProfile = new Profile()
+            dbProfile.facebookId = profile.id
+            dbProfile.name = profile.displayName
+            dbProfile.email = profile.email
+            dbProfile.about = profile._json.about
+            dbProfile.interestedIn = profile._json.interested_in
+            dbProfile.pictureURL = profile.photos[0].value
+            dbProfile.classes = []
+            dbProfile.save(cb)
+        }
+    })
+  }
+));
+
+passport.serializeUser(function(profile, cb) {
+  cb(null, profile.id);
+});
+
+passport.deserializeUser(function(id, cb) {
+    Profile.findOne({facebookId: id}, (err, profile) => {
+        cb(err, profile)
+    })
 });
 
 // Default testing route
@@ -155,6 +203,15 @@ router.route('/profiles/:profile_id')
         })
     });
 
+app.use(cors())
 app.use('/api', router);
+app.use(passport.initialize());
+app.use(passport.session());
+app.get('/auth/facebook',
+  passport.authenticate('facebook', { authType: 'rerequest', scope: ['email', 'user_friends', 'user_about_me', 'user_relationship_details'] }));
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/login', scope: ['email', 'user_friends', 'user_about_me', 'user_relationship_details'] }), (req, res) =>  { res.redirect('http://localhost:3000/profile?token=' + req.user._id);});
+
 app.listen(port);
 console.log('API running on port ' + port);
