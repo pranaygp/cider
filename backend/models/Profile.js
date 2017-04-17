@@ -14,10 +14,7 @@ let ProfileSchema = new Schema({
   facebookId: String,
   pictureURL: String,
   about: String,          // Facebook Profile About
-  interestedIn: Array,
-
-  hash: String,
-  salt: String
+  interestedIn: Array
 });
 
 module.exports = mongoose.model('Profile', ProfileSchema);

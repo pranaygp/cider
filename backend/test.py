@@ -70,7 +70,100 @@ def test7(num_profiles):
     assert (code == 200)
     print "Test 7 passed"
 
+def test8():
+    # Test GET on courses endpoint
+    url = "http://localhost:8080/api/courses"
+    res = requests.get(url)
+    code = res.status_code
+    data = json.loads(res.text)
+    num_items = len(data)
+    assert (code == 200)
+    print "Test 8 passed"
+    return num_items
+
+def test9():
+    # Test POSTing to the courses endpoint
+    url = "http://localhost:8080/api/courses"
+    course = {"name": "Virtual Reality", "code": "CS498SL"}
+    res = requests.post(url, course)
+    code = res.status_code
+    data = json.loads(res.text)
+    temp_id = data['_id']
+    assert (code == 200)
+    print "Test 9 passed"
+    return temp_id
+
+def test10(num_courses):
+    # Test that the POST created a new course
+    url = "http://localhost:8080/api/courses"
+    res = requests.get(url)
+    code = res.status_code
+    data = json.loads(res.text)
+    num_items = len(data)
+    assert (num_items > num_courses)
+    assert (code == 200)
+    print "Test 10 passed"
+
+def test11(id):
+    # Test GETing the courses/course_id endpoint
+    url = "http://localhost:8080/api/courses/" + id
+    res = requests.get(url)
+    code = res.status_code
+    assert (code == 200)
+    print "Test 11 passed"
+
+def test12(id):
+    # Test DELETEing on the courses/course_id endpoint
+    url = "http://localhost:8080/api/courses/" + id
+    res = requests.delete(url)
+    code = res.status_code
+    assert (code == 200)
+    print "Test 12 passed"
+
+def test13(num_courses):
+    # Test that the DELETE removed a course
+    url = "http://localhost:8080/api/courses"
+    res = requests.get(url)
+    code = res.status_code
+    data = json.loads(res.text)
+    num_items = len(data)
+    assert (num_items == num_courses)
+    assert (code == 200)
+    print "Test 13 passed"
+
+def test14():
+    # Test PUT on a Profile to modify its classes
+
+    ## Create a new Profile
+    url = "http://localhost:8080/api/profiles"
+    profile = {"name": "Test User"}
+    res = requests.post(url, profile)
+    code = res.status_code
+    data = json.loads(res.text)
+    temp_id = data['_id']
+
+    ## Get and Modify the new profile's classes array with 3 fake classes
+    url = "http://localhost:8080/api/profiles/" + temp_id
+    payload = {
+        "classes" : [111, 222, 333]
+    }
+    res = requests.put(url, payload)
+    code = res.status_code
+
+    ## Check that our PUT request went through OK
+    assert( code == 200 )
+
+    ## Check that our updated profile's classes array is now length 3
+    updated_data = json.loads(res.text)
+    assert( len(updated_data["classes"]) == 3 )
+
+    ## Delete the new user
+    res = requests.delete(url)
+    print "Test 14 passed"
+
+
 def main():
+    # Week 1 Tests
     test1() # Test a basic GET on our api root endpoint to see if it's running
     num_profiles = test2() # Test a GET on our /profiles endpoint and return the number of profiles we have initially
     id = test3() # Test a POST on our /profiles endpoint and return the ID so we can delete it later
@@ -78,6 +171,18 @@ def main():
     test5(id) # Test a GET on our /profiles/:profile_id endpoint to see if we get the profile we created back
     test6(id) # Test a DELETE on our /profiles/:profile_id endpoint to delete the profile we made
     test7(num_profiles) # Test a GET on our /profiles endpoint to see if the number of profiles went back down
+
+    # Week 2 Tests
+    ## - Courses Endpoints
+    num_courses = test8() # Test a GET on our /courses endpoint and return the number of courses we have initially
+    course_id = test9() # Test a POST on our /courses endpoint and return the course ID so we can delete it later
+    test10(num_courses) # Test a GET on our /courses endpoint to see if the number of courses went up
+    test11(course_id) # Test a GET on our /courses/:course_id endpoint to see if we get the right course back
+    test12(course_id) # Test a DELETE on our /courses/:course_id endpoint to delete the profile we made
+    test13(num_courses) # Test a GET on our /courses endpoint to see if the number of courses went back down
+    ## - Profile Endpoints
+    test14() # Test using PUT request to update a user's Classes array
+
 
     print "Passed all tests"
 

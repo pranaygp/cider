@@ -111,8 +111,10 @@ router.route('/courses/:course_id')
             if (err)
                 res.send(err);
 
-            course.name = req.body.name;
-            course.code = req.body.code;
+            console.log(course);
+
+            if(req.body.name) course.name = req.body.name;
+            if(req.body.code) course.code = req.body.code;
 
             course.save( (err, course) => {
                 if(err)
@@ -150,8 +152,6 @@ router.route('/profiles')
         profile.name = req.body.name;
         profile.email = req.body.email;
         profile.classes = req.body.classes;
-        profile.salt = req.body.salt;
-        profile.hash = req.body.hash;
 
         profile.save( (err, profile) => {
             if(err)
@@ -177,18 +177,21 @@ router.route('/profiles/:profile_id')
             if (err)
                 res.send(err);
 
-            profile.name = req.body.name;
-            profile.email = req.body.email;
-            profile.classes = req.body.classes;
-            profile.salt = req.body.salt;
-            profile.hash = req.body.hash;
+            // Allows optional updating
+            if(req.body.name) profile.name = req.body.name;
+            if(req.body.email) profile.email = req.body.email;
+            if(req.body.classes) profile.classes = req.body.classes;
 
             profile.save( (err, profile) => {
                 if(err)
                     res.send(err);
 
-                // res.json({ message: 'Profile info updated!'});
-                res.json(profile)
+                // res.json({
+                //     message: 'Profile info updated!',
+                //     data: profile
+                // });
+
+                res.json(profile);
             });
         });
     })
