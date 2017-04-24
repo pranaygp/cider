@@ -161,6 +161,68 @@ def test14():
     res = requests.delete(url)
     print "Test 14 passed"
 
+def test15():
+    # Test GETing a nonexistent enrollment id; should have 0 students enrolled
+    url = "http://localhost:8080/api/enrollment/999999999"
+    res = requests.get(url)
+    code = res.status_code
+    data = json.loads(res.text)
+    num_items = len(data)
+    assert (code == 200)
+    assert (num_items == 0)
+    print "Test 15 passed"
+
+def test16():
+    # Test POSTing to the courses endpoint
+    url = "http://localhost:8080/api/courses"
+    course = {"name": "Virtual Reality", "code": "CS498SL"}
+    res = requests.post(url, course)
+    code = res.status_code
+    data = json.loads(res.text)
+    temp_id = data['_id']
+    assert (code == 200)
+    print "Test 16 passed"
+    return temp_id
+
+def test17(id):
+    # Test a GET on the enrollment of the id that we just created; should be 0
+    url = "http://localhost:8080/api/enrollment/" + id
+    res = requests.get(url)
+    code = res.status_code
+    data = json.loads(res.text)
+    num_items = len(data)
+    assert (code == 200)
+    assert (num_items == 0)
+    print "Test 15 passed"
+
+def test18(id):
+    # Create a profile
+    url = "http://localhost:8080/api/profiles"
+    profile = {"name": "Test User"}
+    res = requests.post(url, profile)
+    code = res.status_code
+    data = json.loads(res.text)
+    temp_id = data['_id']
+
+    # Add the course we created to its course array
+    url = url + "/" + temp_id
+    res = requests.put(url, {"classes": [id]})
+    code = res.status_code
+    data = json.loads(res.text)
+
+    # Test the enrollment on our course
+    url = "http://localhost:8080/api/enrollment/" + id
+    res = requests.get(url)
+    code = res.status_code
+    data = json.loads(res.text)
+    num_items = len(data)
+    assert (code == 200)
+    assert (num_items == 1)
+    print "Test 18 passed"
+
+    # Delete the fake user and the fake course
+    res = requests.delete("http://localhost:8080/api/profiles/" + temp_id)
+    res = requests.delete("http://localhost:8080/api/courses/" + id)
 
 def main():
     # Week 1 Tests
@@ -183,6 +245,12 @@ def main():
     ## - Profile Endpoints
     test14() # Test using PUT request to update a user's Classes array
 
+    # Week 3 Tests
+    ## - Enrollment Endpoint
+    test15() # Test GETing a nonexistent enrollment id; should have 0 students enrolled
+    course_id = test16() # Test POSTing to the courses endpoint
+    test17(course_id) # Test a GET on the enrollment of the id that we just created; should be 0
+    test18(course_id) # Create a fake user and register it to our fake course; test that enrollment is now 1
 
     print "Passed all tests"
 
