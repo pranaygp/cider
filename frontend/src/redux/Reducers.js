@@ -21,7 +21,7 @@ export function profile(state = {
 export function classes(state = { }, action){
   switch(action.type){
     case 'SET_CLASS':
-      return { ...state, [action.data._id]: action.data  }
+      return { ...state, [action.data._id]: { ...state[action.data._id] , ...action.data }  }
     default:
       return state
   }
