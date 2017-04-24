@@ -71,6 +71,22 @@ router.get('/', (req, res) => {
     res.json({ message: 'API is running' });
 });
 
+
+router.route('/enrollment/:course_id').get( (req, res) => {
+    let students = [];
+    Profile.find( (err, profiles) => {
+
+        profiles.forEach( (profile) => {
+            if (profile.classes.some( (element, index, array) => { return element == req.params.course_id })) {
+                //students.push(profile._id); // Only return the profile id's
+                students.push(profile); // Return the full profiles
+            }
+        });
+
+        res.json(students);
+    });
+});
+
 router.route('/courses')
     .get( (req, res) => {
         Course.find( (err, courses) => {
@@ -101,6 +117,21 @@ router.route('/courses/:course_id')
         Course.findById(req.params.course_id, (err, course) => {
             if (err)
                 res.send(err);
+
+            // let students = [];
+            //
+            // Profile.find( (err, profiles) => {
+            //     profiles.forEach( (profile) => {
+            //         if (profile.classes.some( (element, index, array) => { return element == req.params.course_id })) {
+            //             students.push(profile._id);
+            //         }
+            //     });
+            //
+            //     res.json({
+            //         course: course,
+            //         students: students
+            //     });
+            // });
 
             res.json(course);
         });

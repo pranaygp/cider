@@ -5,7 +5,6 @@ import { Grid, PageHeader } from 'react-bootstrap'
 
 const BrowseClass = ({ match: { params: { classID }}, classes, dispatch}) => {
   const classData = classes[classID];
-
   if(classData === undefined){
     fetch('http://localhost:8080/api/courses/' + classID)
       .then(r => r.json())
