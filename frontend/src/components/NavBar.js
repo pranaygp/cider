@@ -31,6 +31,7 @@ const Navigation = (props) => {
         { 
           props.loggedIn ? <NavItem eventKey="/profile" >Profile</NavItem> : null
         }
+        <NavItem eventKey="/browse" active={_.startsWith(props.path, '/browse')} >Browse</NavItem>
       </Nav>
       <Nav pullRight activeKey={props.path} onSelect={handleSelect}>
         { 

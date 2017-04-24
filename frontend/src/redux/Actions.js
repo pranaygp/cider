@@ -10,3 +10,10 @@ export function logout(){
     type: 'LOGOUT'
   })
 }
+
+export function addClass(data){
+  return ({
+    type: 'SET_CLASS',
+    data
+  })
+}
