@@ -26,3 +26,10 @@ export function classes(state = { }, action){
       return state
   }
 }
+
+export function api(state = {}, action){
+  if(action.type === 'GOT'){
+    return { ...state, [action.url]: { ...state[action.url], ...action.data } }
+  }
+  return state
+}

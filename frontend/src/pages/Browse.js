@@ -1,16 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux'
-import { addClass } from '../redux/Actions'
+import { get } from '../redux/Actions'
 import ClassList from '../components/ClassList'
 import { Grid, PageHeader } from 'react-bootstrap'
 import _ from 'lodash'
 
 class Browse extends Component {
   componentWillMount(){
-    fetch('http://localhost:8080/api/courses')
-      .then(r => r.json())
-      .then(classes => classes.map(addClass))
-      .then(actions => actions.forEach(this.props.dispatch))
+    this.props.dispatch(get('courses'))
   }
 
   render() {
@@ -30,7 +27,7 @@ class Browse extends Component {
 
 export default connect(
   state => ({
-    classes: state.classes
+    classes: state.api.courses
   })
 )(Browse);
 

@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Grid, Row, Col, PageHeader, Thumbnail } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
-import { setLoggedInProfile, addClass } from '../redux/Actions'
+import { setLoggedInProfile, addClass, get } from '../redux/Actions'
 import ClassList from '../components/ClassList'
 import _ from 'lodash'
 
@@ -36,13 +36,12 @@ class Profile extends Component {
   }
 
   getOrFetchClass(classID, tempID){
-    if(this.props.classHash[classID]){
-      return this.props.classHash[classID]
-    }
-    fetch('http://localhost:8080/api/courses/' + classID)
-      .then(r => r.json())
-      .then(this.props.addClass)
-      .catch(console.error)
+    const classData= _.find(this.props.api.courses, c => c._id === classID) || this.props.api['courses/' + classID]
+    
+    if(classData)
+      return classData
+
+    this.props.dispatch(get('courses/' + classID))
     
     return ({
       code: 'XXX',
@@ -103,7 +102,7 @@ class Profile extends Component {
                 <p>{this.props.profile.about}</p>
               </Thumbnail>
             </Col>
-            <Col xs={12} md={6}>
+            <Col xs={12} md={8}>
               <ClassList 
                 classes={this.props.profile.classes.map(this.getOrFetchClass)} 
                 onClassSelected={this.removeClassFromProfile} 
@@ -123,10 +122,12 @@ class Profile extends Component {
 export default connect(
   state => ({
     profile: state.profile,
-    classHash: state.classes
+    classHash: state.classes,
+    api: state.api
   }),
   dispatch => ({
     setLoggedInProfile: profile => dispatch(setLoggedInProfile(profile)),
-    addClass: classData => dispatch(addClass(classData))
+    addClass: classData => dispatch(addClass(classData)),
+    dispatch
   })
 )(Profile);

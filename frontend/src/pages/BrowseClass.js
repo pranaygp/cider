@@ -1,18 +1,14 @@
 import React from 'react';
 import { connect } from 'react-redux'
-import { addClass } from '../redux/Actions'
+import { get } from '../redux/Actions'
 import { Grid, Col, Thumbnail, PageHeader } from 'react-bootstrap'
 import _ from 'lodash'
 
-const BrowseClass = ({ match: { params: { classID }}, classes, me, dispatch}) => {
-  const classData = classes[classID];
-  if(classData === undefined){
-    fetch('http://localhost:8080/api/courses/' + classID)
-      .then(r => r.json())
-      .then(addClass)
-      .then(dispatch)
-      .catch(console.error)
+const BrowseClass = ({ match: { params: { classID }}, api, classes, me, dispatch}) => {
+  const classData = _.find(classes, c => c._id === classID) || api['courses/' + classID]
 
+  if(classData === undefined){
+    dispatch(get('courses/' + classID))
       return (
         <Grid>
           <PageHeader>Loading</PageHeader>
@@ -20,12 +16,9 @@ const BrowseClass = ({ match: { params: { classID }}, classes, me, dispatch}) =>
       )
   }
 
-  if(classData.people === undefined){
-    fetch('http://localhost:8080/api/enrollment/' + classID)
-      .then(r => r.json())
-      .then(people => ({_id: classID, people}))
-      .then(addClass)
-      .then(dispatch)
+  const people = api['enrollment/' + classID]
+  if(people === undefined){
+    dispatch(get('enrollment/' + classID))
 
       return (
         <Grid>
@@ -39,7 +32,7 @@ const BrowseClass = ({ match: { params: { classID }}, classes, me, dispatch}) =>
     <Grid>
       <PageHeader>{classData.name}</PageHeader>
       {
-        _.filter(classData.people, d => d._id !== me._id).map(p => (
+        _.filter(people, d => d._id !== me._id).map(p => (
           <Col xs={6} md={4}>
             <Thumbnail src={p.pictureURL} alt="profilePic">
               <h3>{p.name}</h3>
@@ -56,6 +49,7 @@ const BrowseClass = ({ match: { params: { classID }}, classes, me, dispatch}) =>
 export default connect(
   state => ({
     me: state.profile,
-    classes: state.classes
+    classes: state.api.courses || [],
+    api: state.api
   })
 )(BrowseClass);

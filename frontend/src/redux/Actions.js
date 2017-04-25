@@ -17,3 +17,10 @@ export function addClass(data){
     data
   })
 }
+
+export function get(url){
+  return ({
+    type: 'GET',
+    url
+  })
+}
