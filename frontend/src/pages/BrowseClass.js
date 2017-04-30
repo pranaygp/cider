@@ -58,8 +58,9 @@ const BrowseClass = ({ match: { params: { classID }}, api, classes, me, dispatch
     }
   }
 
-  people = people
+  people = _(people)
             .map(p => ({...p, friend: me.friends.map(f => f.id).indexOf(p.facebookId) > -1}))
+            .value()
 
   return (
     <Grid>
