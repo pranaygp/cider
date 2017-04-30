@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { get } from '../redux/Actions'
-import { Grid, Col, Thumbnail, PageHeader } from 'react-bootstrap'
+import { Grid, Col, Thumbnail, PageHeader, Button } from 'react-bootstrap'
 import _ from 'lodash'
 
 const BrowseClass = ({ match: { params: { classID }}, api, classes, me, dispatch}) => {
@@ -58,7 +58,8 @@ const BrowseClass = ({ match: { params: { classID }}, api, classes, me, dispatch
     }
   }
 
-
+  people = people
+            .map(p => ({...p, friend: me.friends.map(f => f.id).indexOf(p.facebookId) > -1}))
 
   return (
     <Grid>
@@ -68,7 +69,12 @@ const BrowseClass = ({ match: { params: { classID }}, api, classes, me, dispatch
           <Col key={p._id} xs={6} md={4}>
             <Thumbnail src={p.pictureURL} alt="profilePic">
               <h3>{p.name}</h3>
+              { p.friend ? <p style={{color: "green"}}>Friend!</p> : null }
               <p>{p.about}</p>
+              <a href={`https://www.facebook.com/messages/t/${p.facebookId}`}>
+                { !p.friend ? <Button bsStyle="primary"
+              >Connect</Button> : null }
+              </a>
             </Thumbnail>
           </Col>
         ))

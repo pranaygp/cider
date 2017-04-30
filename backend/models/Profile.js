@@ -11,6 +11,7 @@ let ProfileSchema = new Schema({
     type: String,
     required: false // Later set to "true"
   },
+  friends: Array,
   facebookId: String,
   pictureURL: String,
   about: String,          // Facebook Profile About

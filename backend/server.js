@@ -26,7 +26,7 @@ passport.use(new FacebookStrategy({
     clientID: facebookConfig.clientID,
     clientSecret: facebookConfig.clientSecret,
     callbackURL: `http://localhost:${port}/auth/facebook/callback`,
-    profileFields: ['id', 'displayName', 'email', 'picture.type(large)', 'about', 'interested_in']
+    profileFields: ['id', 'displayName', 'email', 'picture.type(large)', 'about', 'interested_in', 'friends']
   },
   function(accessToken, refreshToken, profile, cb) {
     console.log("Authenticated", profile.displayName)
@@ -36,6 +36,7 @@ passport.use(new FacebookStrategy({
         email: profile.emails[0].value,
         pictureURL: profile.photos[0].value,
         about: profile._json.about,
+        friends: profile._json.friends.data,
         interestedIn: profile._json.interested_in
      }, (err, existingProfile) => {
         if(existingProfile){

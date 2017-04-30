@@ -6,6 +6,7 @@ export function profile(state = {
   _id: "",
   email: "",
   about:"",
+  friends: [],
   classes: []
  }, action){
   switch(action.type){
