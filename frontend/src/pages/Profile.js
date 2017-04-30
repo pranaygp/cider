@@ -14,10 +14,12 @@ class Profile extends Component {
       const queryParams = _.fromPairs(_(props.location.search).tail().join('').split('&').map(s => s.split('=')))
 
       if(queryParams.token) {
-        fetch("http://localhost:8080/api/profiles/" + queryParams.token)
-          .then(r => r.json())
-          .then(props.setLoggedInProfile)
-          .catch(console.error)
+        setTimeout(() => {
+          fetch("http://localhost:8080/api/profiles/" + queryParams.token)
+            .then(r => r.json())
+            .then(props.setLoggedInProfile)
+            .catch(console.error)
+        }, 1000);
       } else {
         // props.goHome()
         this.state = {

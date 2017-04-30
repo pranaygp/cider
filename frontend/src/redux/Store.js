@@ -1,4 +1,5 @@
 import { createStore, combineReducers, applyMiddleware, compose } from 'redux'
+import {persistStore, autoRehydrate} from 'redux-persist'
 import { routerReducer, routerMiddleware } from 'react-router-redux'
 import History from '../router/History'
 import * as reducers from './Reducers.js'
@@ -35,14 +36,19 @@ const APImiddleware = store => {
   }
 }
 
+
+
 const Store = createStore(
   combineReducers({
     ...reducers,
     router: routerReducer
   }), 
   composeEnhancers(
-    applyMiddleware(middleware, APImiddleware)
+    applyMiddleware(middleware, APImiddleware),
+    autoRehydrate()
   )
 )
+
+persistStore(Store)
 
 export default Store
