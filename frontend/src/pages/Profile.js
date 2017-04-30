@@ -109,7 +109,7 @@ class Profile extends Component {
                 classes={this.props.profile.classes.map(this.getOrFetchClass)} 
                 onClassSelected={this.removeClassFromProfile} 
                 addClass
-                allClasses={_.map(this.props.classHash, _.identity)}
+                allClasses={_.map(this.props.api['courses'], _.identity)}
                 onClassAdded={this.addClassToProfile}
                 />
             </Col>
