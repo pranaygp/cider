@@ -7,6 +7,15 @@ const ClassList = ({ classes = [], onClassSelected = console.log, addClass, allC
     <div>
       <ListGroup>
         {classes.map(c => <ListGroupItem key={c._id} onClick={onClassSelected.bind(this, c)}>{c.code} - {c.name} {addClass ? <Glyphicon className="pull-right" glyph="remove-sign" /> : null}</ListGroupItem>)}
+        {
+          !addClass ? 
+            <ListGroupItem
+              onClick={onClassSelected.bind(this, {_id: "all"})}
+            >
+            All My Classes
+            </ListGroupItem> 
+            :null
+        }
         { addClass ? <ListGroupItem>
           <Typeahead 
             onChange={onClassAdded}
