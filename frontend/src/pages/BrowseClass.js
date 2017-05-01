@@ -65,7 +65,7 @@ const BrowseClass = ({ match: { params: { classID }}, api, classes, me, dispatch
   return (
     <Grid>
 
-      <Panel header={classData.code + ' - ' + classData.name}>
+      <Panel header={(classData.code ? classData.code + ' - ' : '') + classData.name}>
         <h3>Currently enrolled:</h3>
       {
         _.filter(people, d => d._id !== me._id).map(p => (

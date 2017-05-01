@@ -10,16 +10,22 @@ class Browse extends Component {
   constructor() {
     super();
     this.filter = this.filter.bind(this);
-    this.url = 'courses';
+    this.state = {
+      url: 'courses'
+    }
   }
 
   componentWillMount(){
-    this.props.dispatch(get(this.url))
+    this.props.dispatch(get(this.state.url))
   }
 
+
   filter(level) {
-    this.url = (level === 0) ? 'courses' : 'courses?level=' + level;
-    this.props.dispatch(get(this.url));
+    if(level === 0)
+      this.setState({ url: 'courses' })
+    else
+      this.setState({ url: 'courses?level=' + level })
+    this.props.dispatch(get(this.state.url));
   }
 
   render() {
@@ -37,8 +43,9 @@ class Browse extends Component {
         <br /><br />
 
         <ClassList 
-          classes={_.map(this.props.classes, _.identity)}
+          classes={_.map(this.props.api[this.state.url], _.identity)}
           onClassSelected={d => this.props.history.push('/browse/' + d._id)} 
+          allMyClasses={this.props.loggedIn}
           />
 
         </Panel>
@@ -49,7 +56,8 @@ class Browse extends Component {
 
 export default connect(
   state => ({
-    classes: state.api.courses
+    loggedIn: state.profile.loggedIn,
+    api: state.api
   })
 )(Browse);
 
