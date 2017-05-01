@@ -19,6 +19,7 @@ export function addClass(data){
 }
 
 export function get(url){
+  console.log(url);
   return ({
     type: 'GET',
     url

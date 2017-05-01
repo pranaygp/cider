@@ -1,0 +1,46 @@
+* {
+  border-radius: 0 !important;
+}
+
+body {
+  background-color: #ECF0F1;
+  font-family: 'Open Sans', sans-serif !important;
+}
+
+.navbar {
+  background-color: #3D3D3D;
+  border: 0;
+}
+
+.active > a {
+  background-color: #D9985E !important;
+  color: white !important;
+  border: 0 !important;
+}
+
+.navbar-nav > li {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.panel-heading {
+  background-color: #D9985E !important;
+  color: white !important;
+
+}
+
+.btn-primary {
+  background-color: #D9985E !important;
+  border: 1px solid #D9985E;
+  margin-right: 1em;
+}
+
+.glyphicon-remove-sign {
+  color: #D9985E;
+}
+
+#logo {
+  margin-right: 1em;
+  color: #D9985E !important;
+  cursor: pointer;
+}

@@ -90,12 +90,28 @@ router.route('/enrollment/:course_id').get( (req, res) => {
 
 router.route('/courses')
     .get( (req, res) => {
-        Course.find( (err, courses) => {
-            if(err)
-                res.send(err);
 
-            res.json(courses);
-        });
+        if(typeof req.query.level != "undefined") {
+            Course.find( (err, courses) => {
+                if(err)
+                    res.send(err);
+                
+                let filteredCourses = [];
+                courses.forEach( (course) => {
+                    if(course.code.charAt(course.code.length - 3) == (req.query.level/100)) {
+                        filteredCourses.push(course);
+                    }
+                });
+                res.json(filteredCourses);
+            });
+        } else {
+            Course.find( (err, courses) => {
+                if(err)
+                    res.send(err);
+
+                res.json(courses);
+            });
+        }
     })
 
     .post( (req, res) => {

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Grid, Row, Col, PageHeader, Thumbnail } from 'react-bootstrap'
+import { Grid, Row, Col, Thumbnail, Panel } from 'react-bootstrap'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router'
 import { setLoggedInProfile, addClass, get } from '../redux/Actions'
@@ -89,32 +89,34 @@ class Profile extends Component {
   render() {
     return this.state.goHome ? <Redirect to='/' /> : (
       <div>
+
         <Grid>
+
           <Row>
-          </Row>
-          <Row>
-            <Col md={12}>
-              <PageHeader>Profile Page</PageHeader>
-            </Col>
           </Row>
           <Row>
             <Col xs={6} md={4}>
+              <Panel header="My Information">
               <Thumbnail src={this.props.profile.pictureURL} alt="profilePic">
                 <h3>{this.props.profile.name}</h3>
                 <p>{this.props.profile.about}</p>
               </Thumbnail>
+              </Panel>
             </Col>
             <Col xs={12} md={8}>
-              <ClassList 
-                classes={this.props.profile.classes.map(this.getOrFetchClass)} 
-                onClassSelected={this.removeClassFromProfile} 
+              <Panel header="My Enrolled Classes">
+              <ClassList
+                classes={this.props.profile.classes.map(this.getOrFetchClass)}
+                onClassSelected={this.removeClassFromProfile}
                 addClass
                 allClasses={_.map(this.props.api['courses'], _.identity)}
                 onClassAdded={this.addClassToProfile}
                 />
+              </Panel>
             </Col>
           </Row>
         </Grid>
+
       </div>
     );
   }

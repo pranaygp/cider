@@ -193,7 +193,7 @@ def test17(id):
     num_items = len(data)
     assert (code == 200)
     assert (num_items == 0)
-    print "Test 15 passed"
+    print "Test 17 passed"
 
 def test18(id):
     # Create a profile
@@ -224,6 +224,27 @@ def test18(id):
     res = requests.delete("http://localhost:8080/api/profiles/" + temp_id)
     res = requests.delete("http://localhost:8080/api/courses/" + id)
 
+def test19():
+    # Create a fake course with the code in the 900's
+    url = "http://localhost:8080/api/courses"
+    course = {"name": "Dummy Class", "code": "CS999"}
+    res = requests.post(url, course)
+    code = res.status_code
+    data = json.loads(res.text)
+    temp_id = data['_id']
+
+    # Test GETing all courses with a 900-level code; we expect 1
+    url = "http://localhost:8080/api/courses?level=900"
+    res = requests.get(url)
+    code = res.status_code
+    data = json.loads(res.text)
+    num_items = len(data)
+    assert (num_items == 1) # Expect only 1 course
+    print "Test 19 passed"
+
+    # Delete the fake course
+    res = requests.delete("http://localhost:8080/api/courses/" + temp_id)
+
 def main():
     # Week 1 Tests
     test1() # Test a basic GET on our api root endpoint to see if it's running
@@ -251,6 +272,10 @@ def main():
     course_id = test16() # Test POSTing to the courses endpoint
     test17(course_id) # Test a GET on the enrollment of the id that we just created; should be 0
     test18(course_id) # Create a fake user and register it to our fake course; test that enrollment is now 1
+
+    # Week 4 Tests
+    ## - Course Endpoint Optional Params
+    test19() # Large test; see specs on Test 19 for details
 
     print "Passed all tests"
 

@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux'
 import { get } from '../redux/Actions'
-import { Grid, Col, Thumbnail, PageHeader, Button } from 'react-bootstrap'
+import { Grid, Col, Thumbnail, PageHeader, Button, Panel } from 'react-bootstrap'
 import _ from 'lodash'
 
 const BrowseClass = ({ match: { params: { classID }}, api, classes, me, dispatch}) => {
@@ -64,7 +64,9 @@ const BrowseClass = ({ match: { params: { classID }}, api, classes, me, dispatch
 
   return (
     <Grid>
-      <PageHeader>{classData.name}</PageHeader>
+
+      <Panel header={classData.code + ' - ' + classData.name}>
+        <h3>Currently enrolled:</h3>
       {
         _.filter(people, d => d._id !== me._id).map(p => (
           <Col key={p._id} xs={6} md={4}>
@@ -80,6 +82,8 @@ const BrowseClass = ({ match: { params: { classID }}, api, classes, me, dispatch
           </Col>
         ))
       }
+
+      </Panel>
     </Grid>
   );
 };
