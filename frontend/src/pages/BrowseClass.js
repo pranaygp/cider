@@ -74,7 +74,7 @@ const BrowseClass = ({ match: { params: { classID }}, api, classes, me, dispatch
               <h3>{p.name}</h3>
               { p.friend ? <p style={{color: "green"}}>Friend!</p> : null }
               <p>{p.about}</p>
-              <a href={`https://www.facebook.com/messages/t/${p.facebookId}`}>
+              <a href={`https://www.facebook.com/${p.facebookId}`}>
                 { !p.friend ? <Button bsStyle="primary"
               >Connect</Button> : null }
               </a>
